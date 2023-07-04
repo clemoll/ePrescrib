@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, Button, Linking } from 'react-native';
+import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 
 export default function QRScannerPage() {
@@ -16,9 +16,8 @@ export default function QRScannerPage() {
 
     const handleBarCodeScanned = ({data }) => {
         setScanned(true);
-        Linking.openURL(data);
         setQRCodeList([...qrCodeList, data]);
-        //alert(`Code QR scanné!\nType: ${type}\nData: ${data}`);
+        alert(`QR Code scanné !\nDonnées : ${data}`);
     };
 
     if (hasPermission === null) {
@@ -30,22 +29,28 @@ export default function QRScannerPage() {
 
     return (
         <View style={styles.container}>
+            <View style={styles.list}>
+                <Text style={styles.listtext}> QR Codes scannés :</Text>
+                {qrCodeList.map((qrCode, index) => (
+                    <Text style={styles.listtext} key={index}> {qrCode} </Text>
+                ))}
+            </View>
+
             <BarCodeScanner
                 onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
                 style={StyleSheet.absoluteFillObject}
             />
 
             {scanned && (
-                <View>
-                    <Button title={'Tap to Scan Again'} onPress={() => setScanned(false)} />
+                <View style={styles.button}>
+                    <TouchableOpacity  onPress={() => setScanned(false)}>
+                        <Text style={styles.buttontitle}> Appuyer pour scanner un autre QR code</Text>
+                    </TouchableOpacity>
                 </View>
             )}
-
-            <Text>Scanned QR Codes:</Text>
-            {qrCodeList.map((qrCode, index) => (
-                <Text key={index}>{qrCode}</Text>
-            ))}
         </View>
+
+
     );
 }
 
@@ -53,6 +58,28 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         flexDirection: 'column',
-        justifyContent: 'center',
+        justifyContent: 'space-between',
+        alignItems: 'center'
     },
+    button: {
+        justifyContent: 'center',
+        width: '80%',
+        height: '10%',
+        marginBottom: '8%',
+        borderRadius: 20,
+        backgroundColor: 'aquamarine',
+    },
+    buttontitle: {
+        fontSize: 30,
+        textAlign: 'center',
+    },
+    list: {
+        flex: 0,
+        justifyContent: "center",
+        alignItems: "center",
+        marginTop: '8%',
+    },
+    listtext: {
+        fontSize: 20,
+    }
 });
