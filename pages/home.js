@@ -10,7 +10,7 @@ const carouselData = [
   {name: "Partager le QR code de mon ordonnance à mon pharmacien.", img: require("../assets/carousel3.jpeg")}
 ]
 
-export default function HomeScreen() {
+export default function HomeScreen({ navigation }) {
   const [isLoaded] = useFonts({
     "Montserrat": require("../assets/fonts/Montserrat/Montserrat-VariableFont_wght.ttf"),
     "Open Sans": require("../assets/fonts/Open_Sans/OpenSans-VariableFont_wdth-wght.ttf"),
@@ -53,7 +53,7 @@ export default function HomeScreen() {
         </TouchableOpacity>
       </View>
       <View style={styles.buttons}>
-        <TouchableOpacity style={styles.button} onPress={() => {}}>
+        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Mes ordonnances')}>
           <Text style={styles.buttonText}>Mes ordonnances</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.button} onPress={() => {}}>
@@ -72,6 +72,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'space-around',
     marginHorizontal: '10%',
+    marginVertical: 16,
   },
   carousel: {
     display: 'flex',
